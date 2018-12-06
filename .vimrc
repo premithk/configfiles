@@ -5,7 +5,9 @@ syntax on
 set number  
 set hidden " Leave hidden buffers open  
 set history=100 "by default Vim saves your last 8 commands.  We can handle more  
-set guifont=Monaco:h14
+set guifont=Inconsolata:h16
+set hlsearch
+set directory^=$HOME/.vim/tmp//
 call plug#begin('~/.vim/plugged')
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'VundleVim/Vundle.vim'
@@ -21,10 +23,17 @@ Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'terryma/vim-smooth-scroll'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'},
+Plug 'Quramy/tsuquyomi',
+Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
 set background=dark
 colorscheme hybrid_material
+
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#semi = 'false'
+let g:prettier#config#single_quote = 'true'
 
 
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
@@ -35,7 +44,6 @@ noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
-autocmd vimenter * NERDTree
 map <C-n> :NERDTreeToggle<CR>
 map <C-p> :GFiles<CR>
 set wildignore+=*/node_modules/*	
@@ -92,3 +100,6 @@ hi tsxEqual guifg=#F99575
 
 " yellow
 hi tsxAttrib guifg=#F8BD7F cterm=italic
+
+set completeopt-=preview
+
