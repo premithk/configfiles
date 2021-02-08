@@ -481,9 +481,7 @@ function! s:denite_filter_my_settings() abort
   \ denite#do_map('do_action', 'vsplit')
   inoremap <silent><buffer><expr> <C-h>
   \ denite#do_map('do_action', 'split')
-endfunction
-
-function! s:denite_filter_my_settings() abort
+  
   inoremap <silent><buffer><expr> <C-j>
       \ denite#increment_parent_cursor(1)
   inoremap <silent><buffer><expr> <C-k>
@@ -492,6 +490,7 @@ function! s:denite_filter_my_settings() abort
       \ denite#increment_parent_cursor(1)
   nnoremap <silent><buffer><expr> <C-k>
       \ denite#increment_parent_cursor(-1)
+
 endfunction
 
 " Define mappings while in denite window
