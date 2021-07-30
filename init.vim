@@ -1,10 +1,8 @@
-scriptencoding utf-8
 source ~/.config/nvim/plugins.vim
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
-
 " Remap leader key to ,
 let g:mapleader=','
 
@@ -62,37 +60,23 @@ try
 "   --files: Print each file that would be searched (but don't search)
 "   --glob:  Include or exclues files for searching that match the given glob
 "            (aka ignore .git files)
-"
-" call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
-call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-map <leader>g :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
+call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
 " Use ripgrep in place of "grep"
-" call denite#custom#var('grep', 'command', ['rg'])
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#source('file_rec', 'sorters', ['sorter_sublime'])
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/*', '*.pyc', 'node_modules/',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '*.png'])
-
+call denite#custom#var('grep', 'command', ['rg'])
 
 " Custom options for ripgrep
 "   --vimgrep:  Show results with every match on it's own line
 "   --hidden:   Search hidden directories and files
 "   --heading:  Show the file name above clusters of matches from each file
 "   --S:        Search case insensitively if the pattern is all lowercase
-" call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
+call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
 
 " Recommended defaults for ripgrep via Denite docs
-" call denite#custom#var('grep', 'recursive_opts', [])
-" call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-" call denite#custom#var('grep', 'separator', ['--'])
-" call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
 
 " Remove date from buffer list
 call denite#custom#var('buffer', 'date_format', '')
@@ -111,10 +95,10 @@ let s:denite_options = {'default' : {
 \ 'start_filter': 1,
 \ 'auto_resize': 1,
 \ 'source_names': 'short',
-\ 'prompt': 'λ ',
+\ 'prompt': '? ',
 \ 'highlight_matched_char': 'QuickFixLine',
 \ 'highlight_matched_range': 'Visual',
-\ 'highlight_window_background': 'NormalFloat',
+\ 'highlight_window_background': 'Visual',
 \ 'highlight_filter_background': 'DiffAdd',
 \ 'winrow': 1,
 \ 'vertical_preview': 1
@@ -133,7 +117,6 @@ call s:profile(s:denite_options)
 catch
   echo 'Denite not installed. It should work after running :PlugInstall'
 endtry
-
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
 function! s:check_back_space() abort
@@ -188,8 +171,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>fm  <Plug>(coc-format-selected)
+nmap <leader>fm  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -273,6 +256,11 @@ let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 
 " Hide conceal markers
 let g:neosnippet#enable_conceal_markers = 0
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " === NERDTree === "
 " Show hidden files/directories
@@ -434,12 +422,23 @@ function! Handle_Win_Enter()
 endfunction
 
 " Editor theme
+
+" ======================================================================
+" Peacock
+" ======================================================================
+" A Sublime Text 2 / Textmate theme.
+" Copyright (c) 2014 Dayle Rees.
+" Released under the MIT License <http://opensource.org/licenses/MIT>
+" ======================================================================
+" Find more themes at : https://github.com/daylerees/colour-schemes
+" ======================================================================
+
 set background=dark
-try
-  colorscheme gruvbox
-catch
-  colorscheme slate
-endtry
+hi clear
+syntax reset
+
+colorscheme gruvbox
+
 " ============================================================================ "
 " ===                             KEY MAPPINGS                             === "
 " ============================================================================ "
@@ -481,7 +480,6 @@ function! s:denite_filter_my_settings() abort
   \ denite#do_map('do_action', 'vsplit')
   inoremap <silent><buffer><expr> <C-h>
   \ denite#do_map('do_action', 'split')
-  
   inoremap <silent><buffer><expr> <C-j>
       \ denite#increment_parent_cursor(1)
   inoremap <silent><buffer><expr> <C-k>
@@ -490,7 +488,6 @@ function! s:denite_filter_my_settings() abort
       \ denite#increment_parent_cursor(1)
   nnoremap <silent><buffer><expr> <C-k>
       \ denite#increment_parent_cursor(-1)
-
 endfunction
 
 " Define mappings while in denite window
@@ -642,4 +639,5 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Enable NERDCommenterToggle to check all selected lines is commented or not 
 let g:NERDToggleCheckAllLines = 1
-
+let NERDTreeHighlightCursorline = 0
+command! -nargs=0 Prettier :CocCommand prettier.formatFile

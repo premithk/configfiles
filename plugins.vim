@@ -35,6 +35,11 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Denite - Fuzzy finding, buffer management
 Plug 'Shougo/denite.nvim'
+" Telescope fuzzy findeer
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 
 " Snippet support
 Plug 'Shougo/neosnippet'
@@ -74,8 +79,9 @@ Plug 'othree/yajs.vim'
 Plug 'scrooloose/nerdtree'
 
 " Colorscheme
-Plug 'mhartington/oceanic-next'
-
+" Plug 'mhartington/oceanic-next'
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
 " Customized vim status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -83,9 +89,12 @@ Plug 'vim-airline/vim-airline-themes'
 " Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
 " Comments
 Plug 'preservim/nerdcommenter'
-
+" Git Blame
+Plug 'APZelos/blamer.nvim'
+" spacevim theme
+" Plug 'liuchengxu/space-vim-dark'
 " Initialize plugin system
 call plug#end()
