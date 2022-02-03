@@ -86,6 +86,10 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" If you want to display icons, then use one of these plugins:
+Plug 'kyazdani42/nvim-web-devicons' " lua
+Plug 'ryanoasis/vim-devicons' " vimscript
+
 " Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -94,7 +98,14 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'preservim/nerdcommenter'
 " Git Blame
 Plug 'APZelos/blamer.nvim'
+" Tree sitter plugin
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " spacevim theme
-" Plug 'liuchengxu/space-vim-dark'
+Plug 'liuchengxu/space-vim-dark'
+" nightfox colorscheme 
+Plug 'EdenEast/nightfox.nvim'
+
+" tokyonight colorscheme 
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 " Initialize plugin system
 call plug#end()

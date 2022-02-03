@@ -155,6 +155,14 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Close all buffers except current
+nnoremap <leader>x :execute '%bdelete\|edit #\|normal `"'\|bdelete#<CR>
+
+" Code folding stuff
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+" End
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -223,11 +231,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -261,7 +264,7 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
+nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
 " === NERDTree === "
 " Show hidden files/directories
 let g:NERDTreeShowHidden = 1
@@ -275,51 +278,9 @@ let g:NERDTreeDirArrowCollapsible = '⬎'
 
 " Hide certain files and directories from NERDTree
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
-
+let g:NERDTreeWinPos = "right"
+let g:NERDTreeWinSize=60
 " Wrap in try/catch to avoid errors on initial install before plugin is available
-try
-
-" === Vim airline ==== "
-" Enable extensions
-let g:airline_extensions = ['branch', 'hunks', 'coc']
-
-" Update section z to just have line number
-let g:airline_section_z = airline#section#create(['linenr'])
-
-" Do not draw separators for empty sections (only for the active window) >
-let g:airline_skip_empty_sections = 1
-
-" Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" Custom setup that removes filetype/whitespace from default vim airline bar
-let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
-
-" Customize vim airline per filetype
-" 'nerdtree'  - Hide nerdtree status line
-" 'list'      - Only show file type plus current line number out of total
-let g:airline_filetype_overrides = {
-  \ 'nerdtree': [ get(g:, 'NERDTreeStatusline', ''), '' ],
-  \ 'list': [ '%y', '%l/%L'],
-  \ }
-
-" Enable powerline fonts
-let g:airline_powerline_fonts = 1
-
-" Enable caching of syntax highlighting groups
-let g:airline_highlighting_cache = 1
-
-" Define custom airline symbols
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" Don't show git changes to current file in airline
-let g:airline#extensions#hunks#enabled=0
-
-catch
-  echo 'Airline not installed. It should work after running :PlugInstall'
-endtry
 
 " === echodoc === "
 " Enable echodoc on startup
@@ -345,9 +306,6 @@ let g:signify_sign_delete = '-'
 
 " Enable true color support
 set termguicolors
-
-" Vim airline theme
-let g:airline_theme='understated'
 
 " Change vertical split character to be a space (essentially hide it)
 set fillchars+=vert:.
@@ -406,7 +364,7 @@ function! s:custom_jarvis_colors()
 endfunction
 
 autocmd! ColorScheme * call TrailingSpaceHighlights()
-autocmd! ColorScheme OceanicNext call s:custom_jarvis_colors()
+autocmd! ColorScheme nightfox call s:custom_jarvis_colors()
 
 " Call method on window enter
 augroup WindowManagement
@@ -421,23 +379,18 @@ function! Handle_Win_Enter()
   endif
 endfunction
 
-" Editor theme
-
-" ======================================================================
-" Peacock
-" ======================================================================
-" A Sublime Text 2 / Textmate theme.
-" Copyright (c) 2014 Dayle Rees.
-" Released under the MIT License <http://opensource.org/licenses/MIT>
-" ======================================================================
-" Find more themes at : https://github.com/daylerees/colour-schemes
-" ======================================================================
-
 set background=dark
 hi clear
 syntax reset
 
-colorscheme gruvbox
+" Load the colorscheme
+colorscheme tokyonight
+let g:airline_theme='nord_minimal'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+
+highlight CursorLine    ctermbg=236 guibg=#444444 cterm=none gui=none
+let g:NERDTreeNodeDelimiter = "\u00a0"
 
 " ============================================================================ "
 " ===                             KEY MAPPINGS                             === "
@@ -641,3 +594,22 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 let NERDTreeHighlightCursorline = 0
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" Treesitter config
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust" },  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+
