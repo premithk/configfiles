@@ -19,11 +19,11 @@ if !filereadable(plugpath)
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-
 " === Editing Plugins === "
 " Trailing whitespace highlighting & automatic fixing
+Plug 'codota/tabnine-nvim', { 'do': './dl_binaries.sh' }
 Plug 'ntpeters/vim-better-whitespace'
-
+Plug 'github/copilot.vim'
 " auto-close plugin
 Plug 'rstacruz/vim-closer'
 
@@ -99,7 +99,7 @@ Plug 'preservim/nerdcommenter'
 " Git Blame
 Plug 'APZelos/blamer.nvim'
 " Tree sitter plugin
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " spacevim theme
 Plug 'liuchengxu/space-vim-dark'
 " nightfox colorscheme 
@@ -107,5 +107,8 @@ Plug 'EdenEast/nightfox.nvim'
 
 " tokyonight colorscheme 
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+
+Plug 'shift-d/scratch.nvim'
+Plug 'nvim-neo-tree/neo-tree.nvim'
 " Initialize plugin system
 call plug#end()
